@@ -22,6 +22,22 @@ class serv(commands.Cog):
         server_socket.listen(5)
         print(f"Сервер запущен и прослушивает порт {port}...")
 
+        while True:
+    # Ожидаем подключения
+            client_socket, address = server_socket.accept()
+            print(f"Подключение от {address}")
+
+    # Получаем данные от клиента
+            data = client_socket.recv(1024).decode()
+            print(f"Данные от клиента: {data}")
+
+    # Отправляем ответ клиенту
+            response = "HTTP/1.1 200 OK\n\nПривет, клиент!"
+            client_socket.send(response.encode())
+
+    # Закрываем соединение с клиентом
+            client_socket.close()
+
 
 def setup(bot):
     bot.add_cog(serv(bot))
